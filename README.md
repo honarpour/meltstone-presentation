@@ -24,6 +24,7 @@ After deploying the `dist` folder, if you'd like to update or change the conent,
 
 Content blocks, the `txt` files mentioned in the section above, can have three types:
 
+* "header": format: `header:Lorem ipsum`, output: `<h1>` element
 * "text": format: `text:Lorem ipsum`, output: `<p>` element
 * "image": format: `image:imagename.ext/or/url`, output: `<img>` element
 * "link": format: `link:http://url`, output: `<a>` element

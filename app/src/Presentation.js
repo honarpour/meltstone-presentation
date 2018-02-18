@@ -5,6 +5,8 @@ import uuidv1 from 'uuid/v1';
 import { Firebase, registerInstance, deleteInstance } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 
+const totalSlides = 8;
+
 class Presentation extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,7 @@ class Presentation extends React.Component {
   }
 
   componentWillMount() {
-    MeltstoneP('content', 8).then(slides => {
+    MeltstoneP('content', totalSlides).then(slides => {
       this.setState({ slides });
     });
   }
@@ -29,11 +31,13 @@ class Presentation extends React.Component {
 
     const { instanceId, activeSlide } = this.state;
 
-    registerInstance(instanceId, activeSlide);
+    registerInstance(instanceId, activeSlide, totalSlides);
 
     Firebase.on('value', snap => {
       const data = snap.val();
-      this.goToSlide(data[instanceId]);
+      const targetSlide = data[instanceId].activeSlide;
+
+      this.goToSlide(targetSlide);
 
       console.log('-- data =', data);
     });
@@ -51,7 +55,8 @@ class Presentation extends React.Component {
   }
 
   goToSlide(slideNumber) {
-    this.props.history.push(`/${slideNumber}`);
+    const { history } = this.props;
+    history.push(`/${slideNumber}`);
   }
 
   render() {
@@ -147,11 +152,16 @@ injectGlobal`
   img {
     max-width: 100%;
   }
+  h1 {
+    color: #000;
+    font-size: 7vw;
+    letter-spacing: 2px;
+  }
+  p {
+    color: #000;
+    font-size: 4vw;
+    line-height: 1.7em;
+  }
 `;
 
 export default Presentation;
-
-// export default connect((props, ref) => ({
-//   df: 'df-val'
-//   // setValue: value => ref('counterValue').set(value)
-// }))(Presentation);

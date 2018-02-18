@@ -1,15 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
 import ReactGA from 'react-ga';
-import { setActiveSlide } from './Firebase';
+import { getTotalSlides, setActiveSlide } from './Firebase';
 
 class Controller extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      instanceId: props.match.params.instanceId || null
+      instanceId: props.match.params.instanceId || null,
+      totalSlides: null,
+      error: null
     };
+  }
+
+  componentWillMount() {
+    const { instanceId } = this.state;
+
+    if (instanceId) {
+      getTotalSlides(instanceId).then(totalSlides => {
+        if (!totalSlides) {
+          this.setState({
+            error: 'Error reading data. Please scan presentation QR-code again.'
+          });
+          return;
+        }
+        this.setState({ totalSlides });
+      });
+    }
   }
 
   componentDidMount() {
@@ -24,20 +42,32 @@ class Controller extends React.Component {
   }
 
   render() {
+    const { totalSlides, error } = this.state;
+
     return (
       <Wrapper>
         <Header>
-          Meltstone<sup>JS</sup>
+          Meltstone<sup>P</sup>
         </Header>
         <Content>
-          <Button onClick={() => this.getSlide(1)}>1</Button>
-          <Button onClick={() => this.getSlide(2)}>2</Button>
-          <Button onClick={() => this.getSlide(3)}>3</Button>
-          <Button onClick={() => this.getSlide(4)}>4</Button>
-          <Button onClick={() => this.getSlide(5)}>5</Button>
-          <Button onClick={() => this.getSlide(6)}>6</Button>
-          <Button onClick={() => this.getSlide(7)}>7</Button>
-          <Button onClick={() => this.getSlide(8)}>8</Button>
+          {totalSlides &&
+            totalSlides > 0 &&
+            Array.from({ length: totalSlides }).map((entry, index) => {
+              const slideNumber = index + 1;
+
+              return (
+                <Button
+                  key={`button-${slideNumber}`}
+                  onClick={() => {
+                    // ReactGA.ga('send', 'slide-click', 'Controller');
+                    this.getSlide(slideNumber);
+                  }}
+                >
+                  {slideNumber}
+                </Button>
+              );
+            })}
+          {error && <Error>{error}</Error>}
         </Content>
       </Wrapper>
     );
@@ -97,6 +127,11 @@ const Button = styled.li`
   &:nth-child(odd) {
     background-color: #eee;
   }
+`;
+
+const Error = styled.div`
+  padding: 50px 20px;
+  font-size: 16pt;
 `;
 
 export default Controller;

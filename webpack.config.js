@@ -43,10 +43,12 @@ const config = {
     ]
   },
   devServer: {
+    host: '0.0.0.0',
+    port: 8080,
     contentBase: buildPath,
     publicPath: `/${bundleFolder}/`,
-    historyApiFallback: true,
-    open: true
+    historyApiFallback: true
+    // open: true
   }
 };
 

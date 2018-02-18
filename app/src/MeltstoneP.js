@@ -17,7 +17,9 @@ const state = {
 const melt = stone => {
   let output = '';
   if (typeof stone !== 'undefined') {
-    if (stone.startsWith('text:')) {
+    if (stone.startsWith('header:')) {
+      output = `<h1>${stone.substring(7, stone.length)}</h1>`;
+    } else if (stone.startsWith('text:')) {
       output = `<p>${stone.substring(5, stone.length)}</p>`;
     } else if (stone.startsWith('image:')) {
       let src = stone.substring(6, stone.length);
@@ -29,8 +31,6 @@ const melt = stone => {
     } else if (stone.startsWith('link:')) {
       const url = stone.substring(5, stone.length);
       output = `<p><a href="${url}" target="_blank" />${url}</a></p>`;
-    } else if (stone.indexOf('&copy;') !== -1 || stone.indexOf('©') !== -1) {
-      output = `<p small>${stone}</p>`;
     } else {
       // Default to text
       output = `<p>${stone}</p>`;

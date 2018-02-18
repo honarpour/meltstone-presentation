@@ -5,9 +5,12 @@ firebase.initializeApp(Config.firebase);
 
 export const Firebase = firebase.database().ref('/');
 
-export const registerInstance = (instanceId, activeSlide) => {
+export const registerInstance = (instanceId, activeSlide, totalSlides) => {
   Firebase.set({
-    [instanceId]: activeSlide
+    [instanceId]: {
+      activeSlide,
+      totalSlides
+    }
   });
 };
 
@@ -16,7 +19,18 @@ export const deleteInstance = instanceId => {
 };
 
 export const setActiveSlide = (instanceId, targetSlide) => {
-  Firebase.set({
-    [instanceId]: targetSlide
-  });
+  Firebase.child(instanceId)
+    .child('activeSlide')
+    .set(targetSlide);
 };
+
+export const getTotalSlides = instanceId =>
+  firebase
+    .database()
+    .ref(instanceId)
+    .once('value')
+    .then(snapshot => {
+      const data = snapshot.val();
+      return data.totalSlides;
+    })
+    .catch(() => null);
