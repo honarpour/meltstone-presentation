@@ -35,7 +35,7 @@ const melt = stone => {
         // Default to text
         return `<p>${stoneLine}</p>`;
       }
-    });
+    }).then(contentLines => contentLines.join(''));
   }
 
   return '';
@@ -68,7 +68,7 @@ const MeltstoneP = (contentFolder, limit) => {
     getSlideContent(slideName)
       .then(data => melt(data))
       .then(content => {
-        state.slides.push(content.join(''));
+        state.slides.push(content);
       })
   )
     .then(() => state.slides)
