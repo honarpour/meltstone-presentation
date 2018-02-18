@@ -86,12 +86,13 @@ class Controller extends React.Component {
 }
 
 const Wrapper = styled.div`
+  position: fixed;
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
   background: #fff;
+  overflow: hidden;
 `;
 
 const Header = styled.div`
@@ -108,6 +109,7 @@ const Header = styled.div`
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
   font-size: 16pt;
   letter-spacing: 1px;
+  z-index: 1;
 
   sup {
     color: #ed4d06;
@@ -118,16 +120,17 @@ const Header = styled.div`
 `;
 
 const Content = styled.ul`
-  margin: 60px 0;
-  padding: 0;
-
-  @media (max-width: 768px) {
-    margin-bottom: 0;
-  }
+  position: fixed;
+  list-style-type: none;
+  margin: 0;
+  padding: 60px 0 0 0;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 const Button = styled.li`
-  display: block;
   margin: 0;
   padding: 20px;
   box-sizing: border-box;
@@ -143,7 +146,6 @@ const Button = styled.li`
     background-color: #eee;
     border: 2px solid #eee;
   }
-
   &.active {
     border: 2px dashed #000;
   }
