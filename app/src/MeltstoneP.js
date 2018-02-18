@@ -68,7 +68,7 @@ const MeltstoneP = (contentFolder, limit) => {
     getSlideContent(slideName)
       .then(data => melt(data))
       .then(content => {
-        state.slides.push(content);
+        state.slides.push(content.join(''));
       })
   )
     .then(() => state.slides)

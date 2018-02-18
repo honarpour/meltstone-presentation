@@ -63,7 +63,7 @@ class Presentation extends React.Component {
         <Content>
           {slides &&
             slides.length > 0 &&
-            slides.map((block, index) => {
+            slides.map((slide, index) => {
               const slideNumber = index + 1;
 
               return (
@@ -76,7 +76,7 @@ class Presentation extends React.Component {
                     slideNumber === activeSlide ? 'active' : 'inactive'
                   }
                 >
-                  <InnerWrapper dangerouslySetInnerHTML={{ __html: block }} />
+                  <InnerWrapper dangerouslySetInnerHTML={{ __html: slide }} />
                 </Slide>
               );
             })}
