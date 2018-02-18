@@ -15,28 +15,30 @@ const state = {
 };
 
 const melt = stone => {
-  let output = '';
   if (typeof stone !== 'undefined') {
-    if (stone.startsWith('header:')) {
-      output = `<h1>${stone.substring(7, stone.length)}</h1>`;
-    } else if (stone.startsWith('text:')) {
-      output = `<p>${stone.substring(5, stone.length)}</p>`;
-    } else if (stone.startsWith('image:')) {
-      let src = stone.substring(6, stone.length);
-      if (src.startsWith('http')) {
-        output = `<img src="${src}" alt="" />`;
+    return Promise.mapSeries(stone.split('\n'), stoneLine => {
+      if (stoneLine.startsWith('header:')) {
+        return `<h1>${stoneLine.substring(7, stoneLine.length)}</h1>`;
+      } else if (stoneLine.startsWith('text:')) {
+        return `<p>${stoneLine.substring(5, stoneLine.length)}</p>`;
+      } else if (stoneLine.startsWith('image:')) {
+        let src = stoneLine.substring(6, stoneLine.length);
+        if (src.startsWith('http')) {
+          return `<img src="${src}" alt="" />`;
+        } else {
+          return `<img src="${state.contentFolder}/${src}" alt="" />`;
+        }
+      } else if (stoneLine.startsWith('link:')) {
+        const url = stoneLine.substring(5, stoneLine.length);
+        return `<p><a href="${url}" target="_blank" />${url}</a></p>`;
       } else {
-        output = `<img src="${state.contentFolder}/${src}" alt="" />`;
+        // Default to text
+        return `<p>${stoneLine}</p>`;
       }
-    } else if (stone.startsWith('link:')) {
-      const url = stone.substring(5, stone.length);
-      output = `<p><a href="${url}" target="_blank" />${url}</a></p>`;
-    } else {
-      // Default to text
-      output = `<p>${stone}</p>`;
-    }
+    });
   }
-  return output;
+
+  return '';
 };
 
 const getSlideContent = slideName => {
@@ -55,7 +57,7 @@ const getSlideContent = slideName => {
 
 const MeltstoneP = (contentFolder, limit) => {
   state.contentFolder = contentFolder;
-  const totalSlides = limit || 10;
+  const totalSlides = limit || 30;
   const slideNames = [];
 
   for (let i = 1; i <= totalSlides; i += 1) {
@@ -63,9 +65,11 @@ const MeltstoneP = (contentFolder, limit) => {
   }
 
   return Promise.mapSeries(slideNames, slideName =>
-    getSlideContent(slideName).then(data => {
-      state.slides.push(melt(data));
-    })
+    getSlideContent(slideName)
+      .then(data => melt(data))
+      .then(content => {
+        state.slides.push(content);
+      })
   )
     .then(() => state.slides)
     .catch(error => {

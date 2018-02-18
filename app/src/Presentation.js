@@ -93,31 +93,6 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-/*
-const Header = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  line-height: 55px;
-  padding: 0 20px;
-  box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #000;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
-  font-size: 16pt;
-  letter-spacing: 1px;
-
-  sup {
-    color: #ed4d06;
-    font-size: 9pt;
-    font-weight: 500;
-    margin-left: 2px;
-  }
-`;
-*/
-
 const Content = styled.ul`
   margin: 0;
   padding: 0;
@@ -150,7 +125,7 @@ const InnerWrapper = styled.div`
 
 injectGlobal`
   img {
-    max-width: 100%;
+    max-width: 70vw;
   }
   h1 {
     color: #000;

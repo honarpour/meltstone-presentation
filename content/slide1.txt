@@ -1,1 +1,1 @@
-header:ElasticSearch
+image:logos.jpg

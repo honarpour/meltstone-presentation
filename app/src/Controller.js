@@ -37,6 +37,7 @@ class Controller extends React.Component {
   }
 
   getSlide(slideNumber) {
+    // ReactGA.ga('send', `slide-request:${slideNumber}`, 'Controller');
     const { instanceId } = this.state;
     if (instanceId) setActiveSlide(instanceId, slideNumber);
   }
@@ -47,7 +48,7 @@ class Controller extends React.Component {
     return (
       <Wrapper>
         <Header>
-          Meltstone<sup>P</sup>
+          Meltstone<sup>JSP</sup>
         </Header>
         <Content>
           {totalSlides &&
@@ -59,7 +60,6 @@ class Controller extends React.Component {
                 <Button
                   key={`button-${slideNumber}`}
                   onClick={() => {
-                    // ReactGA.ga('send', 'slide-click', 'Controller');
                     this.getSlide(slideNumber);
                   }}
                 >
