@@ -23,15 +23,18 @@ export const setActiveSlide = (instanceId, targetSlide) => {
     .set(targetSlide);
 };
 
-export const getTotalSlides = instanceId =>
+export const getInstanceData = instanceId =>
   firebaseRef
     .child(instanceId)
     .once('value')
     .then(snapshot => {
       const data = snapshot.val();
-      return data.totalSlides;
+      return data;
     })
     .catch(() => null);
+
+export const getTotalSlides = instanceId =>
+  getInstanceData(instanceId).then(data => data.totalSlides);
 
 export const listener = (instanceId, action) => {
   firebaseRef.child(instanceId).on('value', snap => {
