@@ -30,9 +30,6 @@ export const getInstanceData = instanceId =>
     .then(snapshot => snapshot.val())
     .catch(() => null);
 
-export const getTotalSlides = instanceId =>
-  getInstanceData(instanceId).then(data => (data ? data.totalSlides : null));
-
 export const listener = (instanceId, action) => {
   firebaseRef.child(instanceId).on('value', snap => {
     const data = {

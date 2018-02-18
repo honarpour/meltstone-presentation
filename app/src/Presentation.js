@@ -17,8 +17,6 @@ class Presentation extends React.Component {
       activeSlide: parseInt(props.match.params.slide) || 1,
       currentSlide: parseInt(props.match.params.slide) || 1
     };
-
-    this.slides = [];
   }
 
   componentWillMount() {
@@ -69,9 +67,6 @@ class Presentation extends React.Component {
               return (
                 <Slide
                   key={`slide-${slideNumber}`}
-                  ref={slide => {
-                    this.slides[index] = slide;
-                  }}
                   className={
                     slideNumber === activeSlide ? 'active' : 'inactive'
                   }

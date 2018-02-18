@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ReactGA from 'react-ga';
-import { getTotalSlides, setActiveSlide } from './Firebase';
+import { getInstanceData, setActiveSlide } from './Firebase';
 
 class Controller extends React.Component {
   constructor(props) {
@@ -9,6 +9,7 @@ class Controller extends React.Component {
 
     this.state = {
       instanceId: props.match.params.instanceId || null,
+      activeSlide: 1,
       totalSlides: null,
       error: null
     };
@@ -18,14 +19,16 @@ class Controller extends React.Component {
     const { instanceId } = this.state;
 
     if (instanceId) {
-      getTotalSlides(instanceId).then(totalSlides => {
-        if (!totalSlides || totalSlides === 0) {
+      getInstanceData(instanceId).then(data => {
+        if (!data || data.totalSlides === 0) {
           this.setState({
             error: 'Error reading data. Please scan presentation QR-code again.'
           });
           return;
         }
-        this.setState({ totalSlides });
+
+        const { activeSlide, totalSlides } = data;
+        this.setState({ activeSlide, totalSlides });
       });
     }
   }
@@ -39,11 +42,18 @@ class Controller extends React.Component {
   getSlide(slideNumber) {
     // ReactGA.ga('send', `slide-request:${slideNumber}`, 'Controller');
     const { instanceId } = this.state;
-    if (instanceId) setActiveSlide(instanceId, slideNumber);
+
+    if (instanceId) {
+      setActiveSlide(instanceId, slideNumber);
+
+      this.setState({
+        activeSlide: slideNumber
+      });
+    }
   }
 
   render() {
-    const { totalSlides, error } = this.state;
+    const { activeSlide, totalSlides, error } = this.state;
 
     return (
       <Wrapper>
@@ -62,6 +72,7 @@ class Controller extends React.Component {
                   onClick={() => {
                     this.getSlide(slideNumber);
                   }}
+                  className={activeSlide === slideNumber ? 'active' : ''}
                 >
                   {slideNumber}
                 </Button>
@@ -123,10 +134,18 @@ const Button = styled.li`
   width: 100vw;
   text-align: center;
   font-size: 20pt;
+  border: 2px solid #fff;
   cursor: pointer;
+  transition: border 0.3s;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
   &:nth-child(odd) {
     background-color: #eee;
+    border: 2px solid #eee;
+  }
+
+  &.active {
+    border: 2px dashed #000;
   }
 `;
 
