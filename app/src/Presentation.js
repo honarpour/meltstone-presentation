@@ -11,16 +11,18 @@ class Presentation extends React.Component {
   constructor(props) {
     super(props);
 
+    const { id, slide } = props.match.params;
+
     this.state = {
-      instanceId: uuidv1().replace(/-/g, ''),
+      instanceId: id || uuidv1().replace(/-/g, ''),
       slides: null,
-      activeSlide: parseInt(props.match.params.slide) || 1,
-      currentSlide: parseInt(props.match.params.slide) || 1
+      activeSlide: parseInt(slide) || 1,
+      currentSlide: parseInt(slide) || 1
     };
   }
 
   componentWillMount() {
-    MeltstoneP('content', totalSlides).then(slides => {
+    MeltstoneP('../content', totalSlides).then(slides => {
       this.setState({ slides });
     });
   }
@@ -50,7 +52,8 @@ class Presentation extends React.Component {
 
   goToSlide(slideNumber) {
     const { history } = this.props;
-    history.push(`/${slideNumber}`);
+    const { instanceId } = this.state;
+    history.push(`/${instanceId}/${slideNumber}`);
   }
 
   render() {

@@ -6,10 +6,17 @@ firebase.initializeApp(Config.firebase);
 export const firebaseRef = firebase.database().ref('/');
 
 export const registerInstance = (instanceId, activeSlide, totalSlides) => {
-  firebaseRef.child(instanceId).set({
-    activeSlide,
-    totalSlides
+  firebaseRef.set({
+    [instanceId]: {
+      activeSlide,
+      totalSlides
+    }
   });
+  // // Multiple Instances
+  // firebaseRef.child(instanceId).set({
+  //   activeSlide,
+  //   totalSlides
+  // });
 };
 
 export const deleteInstance = instanceId => {

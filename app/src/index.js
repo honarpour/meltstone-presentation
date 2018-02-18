@@ -5,11 +5,20 @@ import { injectGlobal } from 'styled-components';
 import Presentation from './Presentation';
 import Controller from './Controller';
 
+const Switch = ({ match }) => {
+  const isCtrl = match.params.switch === 'ctrl';
+
+  if (isCtrl) {
+    return <Route path="/ctrl/:id?" component={Controller} />;
+  }
+
+  return <Route path="/:id?/:slide?" component={Presentation} />;
+};
+
 const App = () => (
   <Router>
     <div>
-      <Route exact path="/:slide?" component={Presentation} />
-      <Route exact path="/ctrl/:instanceId?" component={Controller} />
+      <Route path="/:switch?" component={Switch} />
     </div>
   </Router>
 );

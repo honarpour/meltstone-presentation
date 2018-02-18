@@ -7,11 +7,13 @@ class Controller extends React.Component {
   constructor(props) {
     super(props);
 
+    this.error = 'Error reading data. Please scan presentation QR-code again.';
+
     this.state = {
-      instanceId: props.match.params.instanceId || null,
+      instanceId: props.match.params.id || null,
       activeSlide: 1,
       totalSlides: null,
-      error: null
+      error: props.match.params.id ? null : this.error
     };
   }
 
@@ -22,7 +24,7 @@ class Controller extends React.Component {
       getInstanceData(instanceId).then(data => {
         if (!data || data.totalSlides === 0) {
           this.setState({
-            error: 'Error reading data. Please scan presentation QR-code again.'
+            error: this.error
           });
           return;
         }
