@@ -24,5 +24,6 @@ injectGlobal`
     font-family: "Segoe UI", Arial, sans-serif, Helvetica, Tahoma;
     font-weight: 400;
     font-size: 12pt;
+    overflow: hidden;
   }
 `;

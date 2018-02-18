@@ -19,7 +19,7 @@ class Controller extends React.Component {
 
     if (instanceId) {
       getTotalSlides(instanceId).then(totalSlides => {
-        if (!totalSlides) {
+        if (!totalSlides || totalSlides === 0) {
           this.setState({
             error: 'Error reading data. Please scan presentation QR-code again.'
           });
@@ -80,6 +80,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #fff;
 `;
 
 const Header = styled.div`

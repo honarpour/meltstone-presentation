@@ -14,8 +14,11 @@ class Presentation extends React.Component {
     this.state = {
       instanceId: uuidv1().replace(/-/g, ''),
       slides: null,
-      activeSlide: parseInt(this.props.match.params.slide) || 1
+      activeSlide: parseInt(props.match.params.slide) || 1,
+      currentSlide: parseInt(props.match.params.slide) || 1
     };
+
+    this.slides = [];
   }
 
   componentWillMount() {
@@ -42,7 +45,8 @@ class Presentation extends React.Component {
 
   componentWillReceiveProps(nextPops) {
     this.setState({
-      activeSlide: parseInt(nextPops.match.params.slide) || 1
+      activeSlide: parseInt(nextPops.match.params.slide),
+      currentSlide: parseInt(this.props.match.params.slide)
     });
   }
 
@@ -52,7 +56,7 @@ class Presentation extends React.Component {
   }
 
   render() {
-    const { instanceId, slides, activeSlide } = this.state;
+    const { instanceId, slides, activeSlide, currentSlide } = this.state;
 
     return (
       <Wrapper>
@@ -65,7 +69,12 @@ class Presentation extends React.Component {
               return (
                 <Slide
                   key={`slide-${slideNumber}`}
-                  show={slideNumber === activeSlide}
+                  ref={slide => {
+                    this.slides[index] = slide;
+                  }}
+                  className={
+                    slideNumber === activeSlide ? 'active' : 'inactive'
+                  }
                 >
                   <InnerWrapper dangerouslySetInnerHTML={{ __html: block }} />
                 </Slide>
@@ -83,21 +92,43 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background: #eee;
 `;
 
 const Content = styled.ul`
   margin: 0;
   padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   list-style-type: none;
 `;
 
 const Slide = styled.li`
-  position: relative;
-  display: ${props => (props.show ? 'block' : 'none')};
+  position: absolute;
+  left: 0;
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 1px 8px rgba(0, 0, 0, 0.28);
+
+  &.active {
+    transform: scale(1);
+    top: 0;
+    bottom: auto;
+    transition: transform 0.6s 0.3s ease-in-out, top 0.3s 0.3s ease-in-out,
+      bottom 0.3s 0.3s ease-in-out;
+  }
+  &.inactive {
+    transform: scale(0.9);
+    top: 110%;
+    bottom: -110%;
+    transition: transform 0.3s ease-in-out, top 0.3s 0.3s ease-in-out,
+      bottom 0.3s 0.3s ease-in-out;
+  }
 `;
 
 const InnerWrapper = styled.div`

@@ -27,14 +27,11 @@ export const getInstanceData = instanceId =>
   firebaseRef
     .child(instanceId)
     .once('value')
-    .then(snapshot => {
-      const data = snapshot.val();
-      return data;
-    })
+    .then(snapshot => snapshot.val())
     .catch(() => null);
 
 export const getTotalSlides = instanceId =>
-  getInstanceData(instanceId).then(data => data.totalSlides);
+  getInstanceData(instanceId).then(data => (data ? data.totalSlides : null));
 
 export const listener = (instanceId, action) => {
   firebaseRef.child(instanceId).on('value', snap => {
