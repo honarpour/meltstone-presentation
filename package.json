@@ -1,0 +1,46 @@
+{
+  "name": "meltstone-presentation",
+  "version": "0.7.0",
+  "author": {
+    "name": "Amir Honarpour",
+    "email": "amir@honarpour.com",
+    "url": "http://honarpour.com/code"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/honarpour/meltstone-presentation.git"
+  },
+  "scripts": {
+    "start": "webpack && webpack-dev-server",
+    "build": "webpack -p"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.17",
+    "copy-webpack-plugin": "^4.1.1",
+    "path": "^0.12.7",
+    "styled-components": "^2.2.1",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "firebase": "^4.10.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-ga": "^2.3.5",
+    "react-router-dom": "^4.2.2",
+    "uuid": "^3.2.1"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react"
+    ]
+  }
+}

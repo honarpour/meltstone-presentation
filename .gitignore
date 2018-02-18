@@ -1,0 +1,54 @@
+# folders and files to be ignored by git
+
+############
+## IDEs
+############
+
+*.launch
+*.pydevproject
+*.swp
+*~.nib
+.buildpath
+.classpath
+.cproject
+.externalToolBuilders/
+.loadpath
+.metadata
+.project
+.settings/
+local.properties
+nbproject/
+
+############
+## OSes
+############
+
+*.DS_store
+.DS_store?
+[Dd]esktop.ini
+[Tt]humbs.db
+
+############
+## Misc
+############
+
+*.[Cc]ache
+*.bak
+*.cpr
+*.log
+*.orig
+*.php.in
+*.scssc
+._*
+.idea/
+.sass-cache/
+.svn
+.tmp
+.Trashes
+temp/
+tmp/
+.tmp/
+build/
+dist/
+.vscode/
+node_modules/

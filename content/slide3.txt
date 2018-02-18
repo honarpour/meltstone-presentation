@@ -1,0 +1,1 @@
+text:The engine looks for txt files that describe your building blocks. This approach means content management equals updating txt files, not changing the source code. Since the blocks are loaded in order, you control the flow of information.
