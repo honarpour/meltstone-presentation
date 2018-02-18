@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import ReactGA from 'react-ga';
 import uuidv1 from 'uuid/v1';
-import { Firebase, registerInstance, deleteInstance } from './Firebase';
+import { firebaseRef, registerInstance, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 
 const totalSlides = 8;
@@ -33,19 +33,11 @@ class Presentation extends React.Component {
 
     registerInstance(instanceId, activeSlide, totalSlides);
 
-    Firebase.on('value', snap => {
-      const data = snap.val();
-      const targetSlide = data[instanceId].activeSlide;
-
-      this.goToSlide(targetSlide);
-
+    listener(instanceId, data => {
       console.log('-- data =', data);
+      const targetSlide = data.activeSlide || 1;
+      this.goToSlide(targetSlide);
     });
-  }
-
-  componentWillUnmount() {
-    const { instanceId } = this.state;
-    deleteInstance(instanceId);
   }
 
   componentWillReceiveProps(nextPops) {

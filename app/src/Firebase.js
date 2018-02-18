@@ -3,34 +3,43 @@ import Config from './Config';
 
 firebase.initializeApp(Config.firebase);
 
-export const Firebase = firebase.database().ref('/');
+export const firebaseRef = firebase.database().ref('/');
 
 export const registerInstance = (instanceId, activeSlide, totalSlides) => {
-  Firebase.set({
-    [instanceId]: {
-      activeSlide,
-      totalSlides
-    }
+  firebaseRef.child(instanceId).set({
+    activeSlide,
+    totalSlides
   });
 };
 
 export const deleteInstance = instanceId => {
-  Firebase.child(instanceId).remove();
+  firebaseRef.child(instanceId).remove();
 };
 
 export const setActiveSlide = (instanceId, targetSlide) => {
-  Firebase.child(instanceId)
+  firebaseRef
+    .child(instanceId)
     .child('activeSlide')
     .set(targetSlide);
 };
 
 export const getTotalSlides = instanceId =>
-  firebase
-    .database()
-    .ref(instanceId)
+  firebaseRef
+    .child(instanceId)
     .once('value')
     .then(snapshot => {
       const data = snapshot.val();
       return data.totalSlides;
     })
     .catch(() => null);
+
+export const listener = (instanceId, action) => {
+  firebaseRef.child(instanceId).on('value', snap => {
+    const data = {
+      instanceId,
+      ...snap.val()
+    };
+
+    action(data);
+  });
+};
