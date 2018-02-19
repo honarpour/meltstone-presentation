@@ -14,22 +14,38 @@ const state = {
   contentFolder: ''
 };
 
+const dataTypes = {
+  header: 'header:',
+  text: 'text:',
+  image: 'image:',
+  link: 'link:'
+};
+
 const melt = stone => {
   if (typeof stone !== 'undefined') {
     return Promise.mapSeries(stone.split('\n'), stoneLine => {
-      if (stoneLine.startsWith('header:')) {
-        return `<h1>${stoneLine.substring(7, stoneLine.length)}</h1>`;
-      } else if (stoneLine.startsWith('text:')) {
-        return `<p>${stoneLine.substring(5, stoneLine.length)}</p>`;
-      } else if (stoneLine.startsWith('image:')) {
-        let src = stoneLine.substring(6, stoneLine.length);
+      if (stoneLine.startsWith(dataTypes.header)) {
+        return `<h1>${stoneLine.substring(
+          dataTypes.header.length,
+          stoneLine.length
+        )}</h1>`;
+      } else if (stoneLine.startsWith(dataTypes.text)) {
+        return `<p>${stoneLine.substring(
+          dataTypes.text.length,
+          stoneLine.length
+        )}</p>`;
+      } else if (stoneLine.startsWith(dataTypes.image)) {
+        let src = stoneLine.substring(dataTypes.image.length, stoneLine.length);
         if (src.startsWith('http')) {
           return `<img src="${src}" alt="" />`;
         } else {
           return `<img src="${state.contentFolder}/${src}" alt="" />`;
         }
-      } else if (stoneLine.startsWith('link:')) {
-        const url = stoneLine.substring(5, stoneLine.length);
+      } else if (stoneLine.startsWith(dataTypes.link)) {
+        const url = stoneLine.substring(
+          dataTypes.link.length,
+          stoneLine.length
+        );
         return `<p><a href="${url}" target="_blank" />${url}</a></p>`;
       } else {
         // Default to text
