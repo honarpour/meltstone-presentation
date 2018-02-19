@@ -52,7 +52,7 @@ class Controller extends React.Component {
   }
 
   getSlide(slideNumber) {
-    // ReactGA.ga('send', `slide-request:${slideNumber}`, 'Controller');
+    // ReactGA.ga('send', `slide-request-${slideNumber}`, 'Controller');
     const { instanceId } = this.state;
 
     if (instanceId) {
