@@ -51,7 +51,7 @@ const getSlideContent = slideName => {
     .then(response => response.text())
     .catch(error => {
       console.log(error);
-      return { error };
+      return null;
     });
 };
 
@@ -68,7 +68,8 @@ const MeltstoneP = (contentFolder, limit) => {
     getSlideContent(slideName)
       .then(data => melt(data))
       .then(content => {
-        state.slides.push(content);
+        if (content) state.slides.push(content);
+        return;
       })
   )
     .then(() => state.slides)

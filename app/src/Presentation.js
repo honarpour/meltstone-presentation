@@ -4,8 +4,9 @@ import ReactGA from 'react-ga';
 import uuidv1 from 'uuid/v1';
 import { firebaseRef, registerInstance, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
+import Config from './Config';
 
-const totalSlides = 8;
+const totalSlides = Config.presentation.totalSlides;
 
 class Presentation extends React.Component {
   constructor(props) {

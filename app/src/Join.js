@@ -3,8 +3,9 @@ import styled, { injectGlobal } from 'styled-components';
 import ReactGA from 'react-ga';
 import { getInstanceData, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
+import Config from './Config';
 
-const totalSlides = 8;
+const totalSlides = Config.presentation.totalSlides;
 
 class Join extends React.Component {
   constructor(props) {
@@ -56,8 +57,8 @@ class Join extends React.Component {
       });
 
       listener(instanceId, data => {
-        console.log('-- data =', data);
         const targetSlide = data.activeSlide || 1;
+
         this.setState({
           activeSlide: targetSlide,
           currentSlide: this.state.activeSlide
