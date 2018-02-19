@@ -4,12 +4,18 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { injectGlobal } from 'styled-components';
 import Presentation from './Presentation';
 import Controller from './Controller';
+import Join from './Join';
 
 const Switch = ({ match }) => {
   const isCtrl = match.params.switch === 'ctrl';
+  const isJoin = match.params.switch === 'join';
 
   if (isCtrl) {
     return <Route path="/ctrl/:id?" component={Controller} />;
+  }
+
+  if (isJoin) {
+    return <Route path="/join/:id?" component={Join} />;
   }
 
   return <Route path="/:id?/:slide?" component={Presentation} />;

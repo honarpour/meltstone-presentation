@@ -1,1 +1,2 @@
-image:flow.jpg
+text:Solution:
+text:A "clone" of your data/tables with powerful query and filtering capabilities.

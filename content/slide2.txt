@@ -1,2 +1,4 @@
-header:ElasticSearch
-text:Why?
+header:Why ElasticSearch?
+text:Goal: Rewrite IDX Platform in Serverless on AWS
+text:Database:
+text:DynamoDb; Scalable, pay-per-execution, NoSQL database

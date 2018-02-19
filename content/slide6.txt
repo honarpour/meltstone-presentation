@@ -1,1 +1,1 @@
-text:<strong>Get started:</strong>
+text:blah

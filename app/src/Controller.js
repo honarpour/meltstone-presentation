@@ -47,10 +47,7 @@ class Controller extends React.Component {
 
     if (instanceId) {
       setActiveSlide(instanceId, slideNumber);
-
-      this.setState({
-        activeSlide: slideNumber
-      });
+      this.setState({ activeSlide: slideNumber });
     }
   }
 
@@ -63,7 +60,8 @@ class Controller extends React.Component {
           Meltstone<sup>JSP</sup>
         </Header>
         <Content>
-          {totalSlides &&
+          {!error &&
+            totalSlides &&
             totalSlides > 0 &&
             Array.from({ length: totalSlides }).map((entry, index) => {
               const slideNumber = index + 1;

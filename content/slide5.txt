@@ -1,1 +1,3 @@
-text:This website was made using MeltstoneJS. Which means it is the outcome of stitching a bunch of text and image files together. After cloning the repo, take a look at the files in "root/content" to get a sense of how things work.
+header:Index
+text:A collection of documents/records.
+text:[code for create/delete indicies]

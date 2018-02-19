@@ -1,23 +1,26 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import ReactGA from 'react-ga';
-import uuidv1 from 'uuid/v1';
-import { firebaseRef, registerInstance, listener } from './Firebase';
+import { getInstanceData, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 
 const totalSlides = 8;
 
-class Presentation extends React.Component {
+class Join extends React.Component {
   constructor(props) {
     super(props);
 
-    const { id, slide } = props.match.params;
+    this.error =
+      'Invalid presentation ID. Please try clicking the link again or ask the presenter for a resend.';
+
+    const { id } = props.match.params;
 
     this.state = {
-      instanceId: id || uuidv1().replace(/-/g, ''),
+      instanceId: id || null,
       slides: null,
-      activeSlide: parseInt(slide) || 1,
-      currentSlide: parseInt(slide) || 1
+      activeSlide: null,
+      currentSlide: null,
+      error: id ? null : this.error
     };
   }
 
@@ -29,40 +32,48 @@ class Presentation extends React.Component {
 
   componentDidMount() {
     // ReactGA.initialize('UA-108723524-1');
-    // ReactGA.pageview('Presentation');
-    // ReactGA.ga('send', 'pageview', 'Presentation');
+    // ReactGA.pageview('Join');
+    // ReactGA.ga('send', 'pageview', 'Join');
 
     const { instanceId, activeSlide } = this.state;
 
-    registerInstance(instanceId, activeSlide, totalSlides);
+    if (instanceId) {
+      getInstanceData(instanceId).then(data => {
+        if (!data || data.totalSlides === 0) {
+          this.setState({
+            error: this.error
+          });
+          return;
+        }
 
-    listener(instanceId, data => {
-      console.log('-- data =', data);
-      const targetSlide = data.activeSlide || 1;
-      this.goToSlide(targetSlide);
-    });
-  }
+        const { activeSlide, totalSlides } = data;
 
-  componentWillReceiveProps(nextPops) {
-    this.setState({
-      activeSlide: parseInt(nextPops.match.params.slide),
-      currentSlide: parseInt(this.props.match.params.slide)
-    });
-  }
+        this.setState({
+          activeSlide,
+          currentSlide: activeSlide,
+          totalSlides
+        });
+      });
 
-  goToSlide(slideNumber) {
-    const { history } = this.props;
-    const { instanceId } = this.state;
-    history.push(`/${instanceId}/${slideNumber}`);
+      listener(instanceId, data => {
+        console.log('-- data =', data);
+        const targetSlide = data.activeSlide || 1;
+        this.setState({
+          activeSlide: targetSlide,
+          currentSlide: this.state.activeSlide
+        });
+      });
+    }
   }
 
   render() {
-    const { instanceId, slides, activeSlide, currentSlide } = this.state;
+    const { instanceId, slides, activeSlide, currentSlide, error } = this.state;
 
     return (
       <Wrapper>
         <Content>
-          {slides &&
+          {!error &&
+            slides &&
             slides.length > 0 &&
             slides.map((slide, index) => {
               const slideNumber = index + 1;
@@ -78,6 +89,7 @@ class Presentation extends React.Component {
                 </Slide>
               );
             })}
+          {error && <Error>{error}</Error>}
         </Content>
       </Wrapper>
     );
@@ -144,6 +156,11 @@ const InnerWrapper = styled.div`
   text-align: center;
 `;
 
+const Error = styled.div`
+  padding: 50px 20px;
+  font-size: 16pt;
+`;
+
 injectGlobal`
   img {
     max-width: 70vw;
@@ -160,4 +177,4 @@ injectGlobal`
   }
 `;
 
-export default Presentation;
+export default Join;
