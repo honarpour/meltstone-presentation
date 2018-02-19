@@ -7,6 +7,7 @@ import { firebaseRef, registerInstance, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 import Config from './Config';
 import { getCtrlUrl, getShareUrl } from './Helpers';
+import Logo from './Logo';
 
 class Presentation extends React.Component {
   constructor(props) {
@@ -84,14 +85,17 @@ class Presentation extends React.Component {
             className={0 === activeSlide ? 'active' : 'inactive'}
           >
             <InnerWrapper>
-              Scan QR-code to navigate presentation:
-              <br />
-              <img src={qr} alt="Controller QR-code" />
-              <br />
-              <br />
-              Share:
-              <br />
-              <a href={shareUrl}>{shareUrl}</a>
+              <Logo />
+              <p>
+                Scan QR-code to navigate presentation:
+                <br />
+                <img src={qr} alt="Controller QR-code" />
+              </p>
+              <p>
+                Share for simultaneous presentations:
+                <br />
+                {shareUrl}
+              </p>
             </InnerWrapper>
           </Slide>
           {slides &&

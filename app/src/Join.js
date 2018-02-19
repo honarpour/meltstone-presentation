@@ -4,6 +4,7 @@ import ReactGA from 'react-ga';
 import { getInstanceData, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 import Config from './Config';
+import Logo from './Logo';
 
 class Join extends React.Component {
   constructor(props) {
@@ -83,6 +84,7 @@ class Join extends React.Component {
               className={0 === activeSlide ? 'active' : 'inactive'}
             >
               <InnerWrapper>
+                <Logo />
                 <h1>Presentation hasn't started yet.</h1>
                 <p>&nbsp;</p>
                 <p>Share:</p>

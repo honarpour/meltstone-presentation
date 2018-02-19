@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import ReactGA from 'react-ga';
 import { getInstanceData, setActiveSlide } from './Firebase';
+import Logo from './Logo';
 
 class Controller extends React.Component {
   constructor(props) {
@@ -57,7 +58,7 @@ class Controller extends React.Component {
     return (
       <Wrapper>
         <Header>
-          Meltstone<sup>JSP</sup>
+          <Logo inline />
         </Header>
         <Content>
           {!error && (
@@ -118,16 +119,7 @@ const Header = styled.div`
   background-color: rgba(255, 255, 255, 0.9);
   color: #000;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
-  font-size: 16pt;
-  letter-spacing: 1px;
   z-index: 1;
-
-  sup {
-    color: #ed4d06;
-    font-size: 9pt;
-    font-weight: 500;
-    margin-left: 2px;
-  }
 `;
 
 const Content = styled.ul`
