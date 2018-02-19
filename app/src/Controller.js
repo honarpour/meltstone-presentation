@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ReactGA from 'react-ga';
-import { getInstanceData, setActiveSlide } from './Firebase';
+import { getInstanceData, setActiveSlide, listener } from './Firebase';
 import Logo from './Logo';
 
 class Controller extends React.Component {
@@ -40,6 +40,15 @@ class Controller extends React.Component {
     // ReactGA.initialize('UA-108723524-1');
     // ReactGA.pageview('Controller');
     // ReactGA.ga('send', 'pageview', 'Controller');
+
+    const { instanceId } = this.state;
+
+    if (instanceId) {
+      listener(instanceId, data => {
+        const targetSlide = data.activeSlide || 0;
+        this.setState({ activeSlide: targetSlide });
+      });
+    }
   }
 
   getSlide(slideNumber) {
@@ -48,7 +57,6 @@ class Controller extends React.Component {
 
     if (instanceId) {
       setActiveSlide(instanceId, slideNumber);
-      this.setState({ activeSlide: slideNumber });
     }
   }
 

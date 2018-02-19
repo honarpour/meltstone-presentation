@@ -3,11 +3,16 @@ import styled, { injectGlobal } from 'styled-components';
 import ReactGA from 'react-ga';
 import uuidv1 from 'uuid/v1';
 import QRCode from 'qrcode';
-import { firebaseRef, registerInstance, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 import Config from './Config';
-import { getCtrlUrl, getShareUrl } from './Helpers';
 import Logo from './Logo';
+import { getCtrlUrl, getShareUrl } from './Helpers';
+import {
+  firebaseRef,
+  registerInstance,
+  listener,
+  setActiveSlide
+} from './Firebase';
 
 class Presentation extends React.Component {
   constructor(props) {
@@ -21,9 +26,12 @@ class Presentation extends React.Component {
       slides: null,
       activeSlide: parseInt(slide) || 0,
       currentSlide: parseInt(slide) || 0,
+      spaceSlide: 0,
       totalSlides: Config.presentation.totalSlides,
       qr: ''
     };
+
+    this.navigation = this.navigation.bind(this);
   }
 
   componentWillMount() {
@@ -42,6 +50,8 @@ class Presentation extends React.Component {
     MeltstoneP('../content', totalSlides).then(slides => {
       this.setState({ slides });
     });
+
+    document.addEventListener('keyup', this.navigation);
   }
 
   componentDidMount() {
@@ -54,23 +64,73 @@ class Presentation extends React.Component {
     registerInstance(instanceId, activeSlide, totalSlides);
 
     listener(instanceId, data => {
-      console.log('-- data =', data);
       const targetSlide = data.activeSlide || 0;
       this.goToSlide(targetSlide);
     });
   }
 
   componentWillReceiveProps(nextPops) {
-    this.setState({
-      activeSlide: parseInt(nextPops.match.params.slide),
-      currentSlide: parseInt(this.props.match.params.slide)
-    });
+    const activeSlide = parseInt(nextPops.match.params.slide);
+    const currentSlide = parseInt(this.props.match.params.slide);
+
+    this.setState({ activeSlide, currentSlide });
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keyup', this.navigation);
   }
 
   goToSlide(slideNumber) {
     const { history } = this.props;
     const { instanceId } = this.state;
     history.push(`/${instanceId}/${slideNumber}`);
+  }
+
+  navigation(event) {
+    const { keyCode } = event;
+    const {
+      instanceId,
+      activeSlide,
+      currentSlide,
+      spaceSlide,
+      totalSlides
+    } = this.state;
+
+    switch (keyCode) {
+      case 37: // Left
+        const prevSlide = activeSlide - 1 === -1 ? 0 : activeSlide - 1;
+
+        this.goToSlide(prevSlide);
+        setActiveSlide(instanceId, prevSlide);
+        // ReactGA.ga('send', `keyboard-nav-left`, 'Presentation');
+        break;
+
+      case 39: // Right
+        const nextSlide =
+          activeSlide + 1 === totalSlides + 1 ? totalSlides : activeSlide + 1;
+
+        this.goToSlide(nextSlide);
+        setActiveSlide(instanceId, nextSlide);
+        // ReactGA.ga('send', `keyboard-nav-right`, 'Presentation');
+        break;
+
+      case 32: // Spacebar
+        let jumpSlide = 0;
+
+        if (currentSlide !== 0) {
+          this.setState({ spaceSlide: currentSlide });
+        } else {
+          jumpSlide = spaceSlide;
+        }
+
+        this.goToSlide(jumpSlide);
+        setActiveSlide(instanceId, jumpSlide);
+        // ReactGA.ga('send', `keyboard-nav-spacebar`, 'Presentation');
+        break;
+
+      default:
+        return;
+    }
   }
 
   render() {
