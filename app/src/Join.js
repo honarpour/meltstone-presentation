@@ -5,8 +5,6 @@ import { getInstanceData, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 import Config from './Config';
 
-const totalSlides = Config.presentation.totalSlides;
-
 class Join extends React.Component {
   constructor(props) {
     super(props);
@@ -21,22 +19,13 @@ class Join extends React.Component {
       slides: null,
       activeSlide: null,
       currentSlide: null,
+      totalSlides: Config.presentation.totalSlides,
       error: id ? null : this.error
     };
   }
 
   componentWillMount() {
-    MeltstoneP('../content', totalSlides).then(slides => {
-      this.setState({ slides });
-    });
-  }
-
-  componentDidMount() {
-    // ReactGA.initialize('UA-108723524-1');
-    // ReactGA.pageview('Join');
-    // ReactGA.ga('send', 'pageview', 'Join');
-
-    const { instanceId, activeSlide } = this.state;
+    const { instanceId, activeSlide, totalSlides } = this.state;
 
     if (instanceId) {
       getInstanceData(instanceId).then(data => {
@@ -55,7 +44,21 @@ class Join extends React.Component {
           totalSlides
         });
       });
+    }
 
+    MeltstoneP('../content', totalSlides).then(slides => {
+      this.setState({ slides });
+    });
+  }
+
+  componentDidMount() {
+    // ReactGA.initialize('UA-108723524-1');
+    // ReactGA.pageview('Join');
+    // ReactGA.ga('send', 'pageview', 'Join');
+
+    const { instanceId, activeSlide } = this.state;
+
+    if (instanceId) {
       listener(instanceId, data => {
         const targetSlide = data.activeSlide || 0;
 

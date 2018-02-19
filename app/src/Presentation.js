@@ -2,27 +2,42 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import ReactGA from 'react-ga';
 import uuidv1 from 'uuid/v1';
+import QRCode from 'qrcode';
 import { firebaseRef, registerInstance, listener } from './Firebase';
 import MeltstoneP from './MeltstoneP';
 import Config from './Config';
-
-const totalSlides = Config.presentation.totalSlides;
+import { getCtrlUrl, getShareUrl } from './Helpers';
 
 class Presentation extends React.Component {
   constructor(props) {
     super(props);
 
     const { id, slide } = props.match.params;
+    const instanceId = id || uuidv1().replace(/-/g, '');
 
     this.state = {
-      instanceId: id || uuidv1().replace(/-/g, ''),
+      instanceId,
       slides: null,
       activeSlide: parseInt(slide) || 0,
-      currentSlide: parseInt(slide) || 0
+      currentSlide: parseInt(slide) || 0,
+      totalSlides: Config.presentation.totalSlides,
+      qr: ''
     };
   }
 
   componentWillMount() {
+    const { instanceId, totalSlides } = this.state;
+
+    const controllerUrl = getCtrlUrl(instanceId);
+
+    QRCode.toDataURL(controllerUrl)
+      .then(qr => {
+        this.setState({ qr });
+      })
+      .catch(error => {
+        console.log('Error generating QR-code:', error);
+      });
+
     MeltstoneP('../content', totalSlides).then(slides => {
       this.setState({ slides });
     });
@@ -33,7 +48,7 @@ class Presentation extends React.Component {
     // ReactGA.pageview('Presentation');
     // ReactGA.ga('send', 'pageview', 'Presentation');
 
-    const { instanceId, activeSlide } = this.state;
+    const { instanceId, activeSlide, totalSlides } = this.state;
 
     registerInstance(instanceId, activeSlide, totalSlides);
 
@@ -58,10 +73,8 @@ class Presentation extends React.Component {
   }
 
   render() {
-    const { instanceId, slides, activeSlide, currentSlide } = this.state;
-    const shareUrl = `${window.location
-      .toString()
-      .replace(`${instanceId}/0`, '')}join/${instanceId}`;
+    const { instanceId, slides, activeSlide, currentSlide, qr } = this.state;
+    const shareUrl = getShareUrl(instanceId);
 
     return (
       <Wrapper>
@@ -71,7 +84,13 @@ class Presentation extends React.Component {
             className={0 === activeSlide ? 'active' : 'inactive'}
           >
             <InnerWrapper>
-              Share:<br />
+              Scan QR-code to navigate presentation:
+              <br />
+              <img src={qr} alt="Controller QR-code" />
+              <br />
+              <br />
+              Share:
+              <br />
               <a href={shareUrl}>{shareUrl}</a>
             </InnerWrapper>
           </Slide>
