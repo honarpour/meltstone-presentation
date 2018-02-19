@@ -60,6 +60,17 @@ class Controller extends React.Component {
           Meltstone<sup>JSP</sup>
         </Header>
         <Content>
+          {!error && (
+            <Button
+              key={`button-${0}`}
+              onClick={() => {
+                this.getSlide(0);
+              }}
+              className={activeSlide === 0 ? 'active' : ''}
+            >
+              Start
+            </Button>
+          )}
           {!error &&
             totalSlides &&
             totalSlides > 0 &&

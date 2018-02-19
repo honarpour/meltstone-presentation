@@ -17,8 +17,8 @@ class Presentation extends React.Component {
     this.state = {
       instanceId: id || uuidv1().replace(/-/g, ''),
       slides: null,
-      activeSlide: parseInt(slide) || 1,
-      currentSlide: parseInt(slide) || 1
+      activeSlide: parseInt(slide) || 0,
+      currentSlide: parseInt(slide) || 0
     };
   }
 
@@ -39,7 +39,7 @@ class Presentation extends React.Component {
 
     listener(instanceId, data => {
       console.log('-- data =', data);
-      const targetSlide = data.activeSlide || 1;
+      const targetSlide = data.activeSlide || 0;
       this.goToSlide(targetSlide);
     });
   }
@@ -59,10 +59,22 @@ class Presentation extends React.Component {
 
   render() {
     const { instanceId, slides, activeSlide, currentSlide } = this.state;
+    const shareUrl = `${window.location
+      .toString()
+      .replace(`${instanceId}/0`, '')}join/${instanceId}`;
 
     return (
       <Wrapper>
         <Content>
+          <Slide
+            key={`slide-${0}`}
+            className={0 === activeSlide ? 'active' : 'inactive'}
+          >
+            <InnerWrapper>
+              Share:<br />
+              <a href={shareUrl}>{shareUrl}</a>
+            </InnerWrapper>
+          </Slide>
           {slides &&
             slides.length > 0 &&
             slides.map((slide, index) => {

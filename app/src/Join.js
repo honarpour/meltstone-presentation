@@ -57,7 +57,7 @@ class Join extends React.Component {
       });
 
       listener(instanceId, data => {
-        const targetSlide = data.activeSlide || 1;
+        const targetSlide = data.activeSlide || 0;
 
         this.setState({
           activeSlide: targetSlide,
@@ -69,10 +69,24 @@ class Join extends React.Component {
 
   render() {
     const { instanceId, slides, activeSlide, currentSlide, error } = this.state;
+    const shareUrl = window.location.toString();
 
     return (
       <Wrapper>
         <Content>
+          {!error && (
+            <Slide
+              key={`slide-${0}`}
+              className={0 === activeSlide ? 'active' : 'inactive'}
+            >
+              <InnerWrapper>
+                <h1>Presentation hasn't started yet.</h1>
+                <p>&nbsp;</p>
+                <p>Share:</p>
+                <p>{shareUrl}</p>
+              </InnerWrapper>
+            </Slide>
+          )}
           {!error &&
             slides &&
             slides.length > 0 &&

@@ -7,8 +7,8 @@ import Controller from './Controller';
 import Join from './Join';
 
 const Switch = ({ match }) => {
-  const isCtrl = match.params.switch === 'ctrl';
-  const isJoin = match.params.switch === 'join';
+  const isCtrl = match.params.path === 'ctrl';
+  const isJoin = match.params.path === 'join';
 
   if (isCtrl) {
     return <Route path="/ctrl/:id?" component={Controller} />;
@@ -24,7 +24,7 @@ const Switch = ({ match }) => {
 const App = () => (
   <Router>
     <div>
-      <Route path="/:switch?" component={Switch} />
+      <Route path="/:path?" component={Switch} />
     </div>
   </Router>
 );
