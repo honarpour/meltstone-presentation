@@ -12,6 +12,10 @@ const Switch = ({ match }) => {
   const isJoin = match.params.path === 'join';
   const isAdmin = match.params.path === Config.secret;
 
+  if (isCtrl) {
+    return <Route path="/ctrl/:id?" component={Controller} />;
+  }
+
   if (isJoin) {
     return <Route path="/join/:id?" component={Join} />;
   }
