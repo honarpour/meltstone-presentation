@@ -1,4 +1,5 @@
 const Config = {
+  secret: 'msjsp',
   presentation: {
     totalSlides: 11,
     colors: {

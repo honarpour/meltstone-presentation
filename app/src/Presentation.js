@@ -47,7 +47,7 @@ class Presentation extends React.Component {
         console.log('Error generating QR-code:', error);
       });
 
-    MeltstoneP('../content', totalSlides).then(slides => {
+    MeltstoneP('../../content', totalSlides).then(slides => {
       this.setState({ slides });
     });
 
@@ -83,7 +83,7 @@ class Presentation extends React.Component {
   goToSlide(slideNumber) {
     const { history } = this.props;
     const { instanceId } = this.state;
-    history.push(`/${instanceId}/${slideNumber}`);
+    history.push(`/${Config.secret}/${instanceId}/${slideNumber}`);
   }
 
   navigation(event) {

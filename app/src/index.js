@@ -1,24 +1,28 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { injectGlobal } from 'styled-components';
 import Presentation from './Presentation';
 import Controller from './Controller';
 import Join from './Join';
+import Config from './Config';
 
 const Switch = ({ match }) => {
   const isCtrl = match.params.path === 'ctrl';
   const isJoin = match.params.path === 'join';
-
-  if (isCtrl) {
-    return <Route path="/ctrl/:id?" component={Controller} />;
-  }
+  const isAdmin = match.params.path === Config.secret;
 
   if (isJoin) {
     return <Route path="/join/:id?" component={Join} />;
   }
 
-  return <Route path="/:id?/:slide?" component={Presentation} />;
+  if (isAdmin) {
+    return (
+      <Route path={`/${Config.secret}/:id?/:slide?`} component={Presentation} />
+    );
+  }
+
+  return <Redirect to="/join" />;
 };
 
 const App = () => (
