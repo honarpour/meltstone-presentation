@@ -22,7 +22,7 @@ After deploying the `dist` folder, if you'd like to update or change the conent,
 
 ### Slides
 
-Slides, the `txt` files mentioned in the section above, can have three types:
+Slides, the `txt` files mentioned in the section above, can have multiple lines of four types:
 
 * "header": format: `header:Lorem ipsum`, output: `<h1>` element
 * "text": format: `text:Lorem ipsum`, output: `<p>` element
