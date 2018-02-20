@@ -207,8 +207,8 @@ const Slide = styled.li`
   padding: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #fff;
-  color: #000;
+  background-color: ${Config.presentation.colors.background || '#fff'};
+  color: ${Config.presentation.colors.text || '#000'};
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 1px 8px rgba(0, 0, 0, 0.28);
 
   &.active {
@@ -247,12 +247,14 @@ injectGlobal`
     max-width: 70vw;
   }
   h1 {
-    color: #000;
+    color: ${Config.presentation.colors.text || '#000'} !important;
     font-size: 7vw;
     letter-spacing: 2px;
+    text-shadow: 3px 3px ${Config.presentation.colors.background ||
+      '#fff'}, 5px 5px ${Config.presentation.colors.main || '#ed4d06'};
   }
   p {
-    color: #000;
+    color: ${Config.presentation.colors.text || '#000'} !important;
     font-size: 4vw;
     line-height: 1.7em;
   }

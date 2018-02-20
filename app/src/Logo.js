@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Config from './Config';
 
 class Logo extends React.Component {
   render() {
@@ -17,13 +18,12 @@ const MSPLogo = styled.div`
   margin: 30px auto;
   padding: 20px;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #000;
+  color: ${Config.presentation.colors.text || '#000'};
   font-size: 16pt;
   letter-spacing: 1px;
 
   sup {
-    color: #ed4d06;
+    color: ${Config.presentation.colors.main || '#ed4d06'};
     font-size: 9pt;
     font-weight: 500;
     margin-left: 2px;

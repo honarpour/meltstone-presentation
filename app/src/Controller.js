@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ReactGA from 'react-ga';
 import { getInstanceData, setActiveSlide, listener } from './Firebase';
 import Logo from './Logo';
+import Config from './Config';
 
 class Controller extends React.Component {
   constructor(props) {
@@ -124,7 +125,7 @@ const Header = styled.div`
   line-height: 55px;
   padding: 0 20px;
   box-sizing: border-box;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: ${Config.presentation.colors.background || '#fff'};
   color: #000;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
   z-index: 1;
@@ -158,7 +159,7 @@ const Button = styled.li`
     border: 2px solid #eee;
   }
   &.active {
-    border: 2px dashed #000;
+    border: 2px dashed ${Config.presentation.colors.main || '#ed4d06'};
   }
 `;
 

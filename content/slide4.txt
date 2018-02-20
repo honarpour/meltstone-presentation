@@ -1,2 +1,3 @@
 header:Solution
 text:A clone of your data/tables with powerful query and filtering capabilities.
+text: Downside: EC2 instance, not Serverless, yet.
