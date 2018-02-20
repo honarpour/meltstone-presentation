@@ -9,20 +9,24 @@ class Controller extends React.Component {
   constructor(props) {
     super(props);
 
-    this.error = 'Error reading data. Please scan presentation QR-code again.';
+    const { secret, id } = props.match.params;
+
+    this.isAdmin = secret === Config.secret && id;
+
+    this.error = 'Error connecting. Please scan presentation QR-code again.';
 
     this.state = {
-      instanceId: props.match.params.id || null,
+      instanceId: id || null,
       activeSlide: 1,
       totalSlides: null,
-      error: props.match.params.id ? null : this.error
+      error: this.isAdmin ? null : this.error
     };
   }
 
   componentWillMount() {
-    const { instanceId } = this.state;
+    if (this.isAdmin) {
+      const { instanceId } = this.state;
 
-    if (instanceId) {
       getInstanceData(instanceId).then(data => {
         if (!data || data.totalSlides === 0) {
           this.setState({
@@ -42,9 +46,9 @@ class Controller extends React.Component {
     // ReactGA.pageview('Controller');
     // ReactGA.ga('send', 'pageview', 'Controller');
 
-    const { instanceId } = this.state;
+    if (this.isAdmin) {
+      const { instanceId } = this.state;
 
-    if (instanceId) {
       listener(instanceId, data => {
         const targetSlide = data.activeSlide || 0;
         this.setState({ activeSlide: targetSlide });
@@ -54,9 +58,10 @@ class Controller extends React.Component {
 
   getSlide(slideNumber) {
     // ReactGA.ga('send', `slide-request-${slideNumber}`, 'Controller');
-    const { instanceId } = this.state;
 
-    if (instanceId) {
+    if (this.isAdmin) {
+      const { instanceId } = this.state;
+
       setActiveSlide(instanceId, slideNumber);
     }
   }

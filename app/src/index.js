@@ -13,7 +13,7 @@ const Switch = ({ match }) => {
   const isAdmin = match.params.path === Config.secret;
 
   if (isCtrl) {
-    return <Route path="/ctrl/:id?" component={Controller} />;
+    return <Route path={`/ctrl/:secret?/:id?`} component={Controller} />;
   }
 
   if (isJoin) {
@@ -21,9 +21,7 @@ const Switch = ({ match }) => {
   }
 
   if (isAdmin) {
-    return (
-      <Route path={`/${Config.secret}/:id?/:slide?`} component={Presentation} />
-    );
+    return <Route path={`/:secret?/:id?/:slide?`} component={Presentation} />;
   }
 
   return <Redirect to="/join" />;
