@@ -1,3 +1,3 @@
 header:Document
 text:Your data.
-text:[image of code for create/delete documents]
+image:record.jpg

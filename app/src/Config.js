@@ -1,6 +1,6 @@
 const Config = {
   presentation: {
-    totalSlides: 10,
+    totalSlides: 11,
     colors: {
       main: '#ed4d06',
       background: '#fff',

@@ -1,2 +1,2 @@
 header:Setup on AWS
-text:[image of code for sls setup]
+image:setup.jpg
