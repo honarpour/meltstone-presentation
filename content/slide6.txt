@@ -1,1 +1,3 @@
-text:blah
+header:Index
+text:A collection of documents/records.
+text:[image of code for create/delete indicies]

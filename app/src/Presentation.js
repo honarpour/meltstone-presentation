@@ -147,7 +147,9 @@ class Presentation extends React.Component {
             <InnerWrapper>
               <Logo />
               <p>
-                Scan QR-code to navigate presentation:
+                Use left and right arrows of keyboard or
+                <br />
+                scan QR-code to navigate presentation:
                 <br />
                 <img src={qr} alt="Controller QR-code" />
               </p>

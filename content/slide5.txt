@@ -1,3 +1,2 @@
-header:Index
-text:A collection of documents/records.
-text:[code for create/delete indicies]
+header:Setup on AWS
+text:[image of code for sls setup]

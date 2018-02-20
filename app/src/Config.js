@@ -1,6 +1,6 @@
 const Config = {
   presentation: {
-    totalSlides: 8
+    totalSlides: 10
   },
   firebase: {
     apiKey: 'AIzaSyA1a7y14XNBELzYLwMjH4fuKQwJIlisiO0',
