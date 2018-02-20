@@ -187,14 +187,14 @@ injectGlobal`
   }
   h1 {
     color: ${Config.presentation.colors.text || '#000'} !important;
-    font-size: 7vw;
+    font-size: 5vw;
     letter-spacing: 2px;
     text-shadow: 3px 3px ${Config.presentation.colors.background ||
       '#fff'}, 5px 5px ${Config.presentation.colors.main || '#ed4d06'};
   }
   p {
     color: ${Config.presentation.colors.text || '#000'} !important;
-    font-size: 4vw;
+    font-size: 3vw;
     line-height: 1.7em;
   }
 `;
