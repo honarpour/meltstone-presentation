@@ -8,7 +8,8 @@ class Logo extends React.Component {
 
     return (
       <MSPLogo className={isInline ? 'inline' : ''}>
-        Meltstone<sup>JSP</sup>
+        {Config.presentation.title}
+        <sup>{Config.presentation.sup}</sup>
       </MSPLogo>
     );
   }
